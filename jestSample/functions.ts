@@ -1,6 +1,7 @@
 import { NameApiService } from "./nameApiService";
-import { DatabaseMock } from "./util";
+import { DatabaseMock, getRandomInt } from "./util";
 
+// number型の配列の要素を全て足した結果を返す
 export const sumOfArray = (numbers: number[]): number => {
   return numbers.reduce((a: number, b: number): number => a + b);
 };
@@ -12,12 +13,13 @@ export const asyncSumOfArray = (numbers: number[]): Promise<number> => {
 };
 
 export const asyncSumOfArraySometimesZero = (
-  numbers: number[]
+  numbers: number[],
+  randomInt: number
 ): Promise<number> => {
   return new Promise((resolve): void => {
     try {
       const database = new DatabaseMock(); // fixme: この関数をテストするには、DatabaseMockの使い方を変える必要がありそう！ヒント：依存性の注入
-      database.save(numbers);
+      database.save(numbers, randomInt);
       resolve(sumOfArray(numbers));
     } catch (error) {
       resolve(0);

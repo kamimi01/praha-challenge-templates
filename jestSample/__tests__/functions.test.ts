@@ -4,6 +4,8 @@ import {
   asyncSumOfArray,
   asyncSumOfArraySometimesZero,
 } from "../functions";
+import { getRandomInt } from "../util";
+// import { DatabaseMock, getRandomInt } from "../util";
 
 /**
  * sumOfArrayのテスト
@@ -70,12 +72,36 @@ describe("test of asyncSumOfArray", () => {
  */
 describe("test of asyncSumOfArraySometimesZero", () => {
   // 正常系のテスト
-  test("normal case", async () => {
+  test("normal case: no errors happen", async () => {
     const testData = [1, 1];
+    // TODO：本当はspyonを使ってgetRandomInt関数の戻り値を10に指定したかったが、やり方わからず。。
+    // getRandonIntを直接エクスポートしているせいでやりづらいのかも？
+    const randomIntMock = jest.fn(() => {
+      return 10;
+    });
     const expectedValue: number = 2;
 
-    const receivedValue = await asyncSumOfArraySometimesZero(testData);
+    const receivedValue = await asyncSumOfArraySometimesZero(
+      testData,
+      randomIntMock()
+    );
 
     expect(receivedValue).toBe(expectedValue);
   });
+
+  test("normal case: some errors happen", async () => {
+    const testData = [1, 1];
+    const randomIntMock = jest.fn(() => {
+      return 1;
+    });
+    const expectedValue = 0;
+
+    await expect(
+      asyncSumOfArraySometimesZero(testData, randomIntMock())
+    ).resolves.toBe(expectedValue);
+  });
 });
+
+/**
+ * 
+ */
