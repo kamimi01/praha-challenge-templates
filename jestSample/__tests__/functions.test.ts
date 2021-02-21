@@ -76,6 +76,8 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     const testData = [1, 1];
     // TODO：本当はspyonを使ってgetRandomInt関数の戻り値を10に指定したかったが、やり方わからず。。
     // getRandonIntを直接エクスポートしているせいでやりづらいのかも？
+    // ところでspyとmockとstubの違いがよくわからないため、あとで以下を読む
+    // https://martinfowler.com/articles/mocksArentStubs.html
     const randomIntMock = jest.fn(() => {
       return 10;
     });
@@ -128,7 +130,7 @@ describe("test of getFirstNameThrowIfLong", () => {
       return "Pablo Diego José Francisco";
     });
 
-    // TODO：resolvesになっていることが確認できていれば良いのか？
+    // TODO：resolvesになっていることが確認できていれば良いのか？他に確認すべきことはないか
     // エラーはnameApiServiceの方で発生しているから、そっちでエラーメッセージの確認はすれば良いし。。
     await expect(getFirstNameThrowIfLong(maxNameLength, getFirstNameMock()))
       .resolves;
@@ -147,6 +149,7 @@ describe("test of getFirstNameThrowIfLong", () => {
     //   getFirstNameThrowIfLong(maxNameLength, getFirstNameMock())
     // ).rejects.toThrow(expectedErrorMsg);
 
+    // TODO：エラーメッセージのチェックをしたい
     try {
       await getFirstNameThrowIfLong(maxNameLength, getFirstNameMock());
     } catch (e) {
