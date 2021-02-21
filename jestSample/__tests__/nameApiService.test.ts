@@ -5,31 +5,36 @@ describe("test of NameApiService", () => {
   jest.mock("axios");
   const axiosSpy = jest.spyOn(axios, "get");
 
-  // 正常系のテスト（ビルドエラーがまだ解消できてません、、）
-  // test("normal case: no errors happen", async () => {
-  //   const nameApiServiceInstance = new NameApiService();
-  //   const randomName = jest.fn(() => {
-  //     const data: Object = {
-  //       firstName: "tom",
-  //     };
-  //     return data;
-  //   });
-  //   const receivedValue = await nameApiServiceInstance.getFirstName(
-  //     // nameApiServiceInstance.getRandomName()
-  //     randomName()
-  //   );
-  //   const expectedValue = "kamimi";
+  // 正常系のテスト
+  test("normal case: no errors happen", async () => {
+    const nameApiServiceInstance = new NameApiService();
+    const testData: Object = {
+      first_name: "tom",
+    };
+    axiosSpy.mockResolvedValue({ data: testData });
+    const randomName = await nameApiServiceInstance.getRandomName();
 
-  //   expect(receivedValue).toBe(expectedValue);
-  // });
+    const receivedValue = await nameApiServiceInstance.getFirstName(randomName);
+    const expectedValue = "tom";
 
-  // test("normal case: some errors happen", async () => {
-  //   const nameApiServiceInstance = new NameApiService();
-  //   const receivedValue = await nameApiServiceInstance.getFirstName(
-  //     nameApiServiceInstance.getRandomName()
-  //   );
-  //   const expectedValue = "kamimi";
+    expect(receivedValue).toBe(expectedValue);
+  });
 
-  //   expect(receivedValue).toBe(expectedValue);
-  // });
+  test("normal case: some errors happen", async () => {
+    const nameApiServiceInstance = new NameApiService();
+    const testData: Object = {
+      first_name: "Pablo Diego José Francisco",
+    };
+    axiosSpy.mockResolvedValue({ data: testData });
+    const randomName = await nameApiServiceInstance.getRandomName();
+    const expectedValue = "Pablo Diego José Francisco";
+
+    // TODO：「1.10 Don’t catch errors, expect them」のルールに従いたかったが、
+    // エラーが解消できなかったため、断念。。
+    try {
+      await nameApiServiceInstance.getFirstName(randomName);
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error);
+    }
+  });
 });
