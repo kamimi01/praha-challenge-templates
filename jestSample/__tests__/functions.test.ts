@@ -1,10 +1,12 @@
 // todo: ここに単体テストを書いてみましょう！
+import axios from "axios";
 import {
   sumOfArray,
   asyncSumOfArray,
   asyncSumOfArraySometimesZero,
   getFirstNameThrowIfLong,
 } from "../functions";
+import { NameApiService } from "../nameApiService";
 import { DatabaseMock } from "../util/index";
 
 /**
@@ -113,52 +115,43 @@ describe("test of asyncSumOfArraySometimesZero", () => {
  * getFirstNameThrowIfLongのテスト
  */
 describe("test of getFirstNameThrowIfLong", () => {
+  jest.mock("axios");
+  const axiosSpy = jest.spyOn(axios, "get");
+  let nameApiSerivce: NameApiService;
+  beforeEach(() => {
+    nameApiSerivce = new NameApiService();
+  });
+
   // 正常系のテスト
   test("normal case: no errors happen", async () => {
     const maxNameLength = 100;
-    const getFirstNameMock = jest.fn(() => {
-      return "mi";
-    });
     const expectedValue = "mi";
+    const testData: Object = {
+      first_name: expectedValue,
+    };
+    axiosSpy.mockResolvedValue({ data: testData });
 
     const receivedValue = await getFirstNameThrowIfLong(
       maxNameLength,
-      getFirstNameMock()
+      nameApiSerivce
     );
 
+    expect.assertions(1);
     expect(receivedValue).toBe(expectedValue);
-  });
-
-  test("normal case: some errors happen", async () => {
-    const maxNameLength = 100;
-    const getFirstNameMock = jest.fn(() => {
-      return "Pablo Diego José Francisco";
-    });
-
-    // TODO：resolvesになっていることが確認できていれば良いのか？他に確認すべきことはないか
-    // エラーはnameApiServiceの方で発生しているから、そっちでエラーメッセージの確認はすれば良いし。。
-    await expect(getFirstNameThrowIfLong(maxNameLength, getFirstNameMock()))
-      .resolves;
   });
 
   test("normal case: some errors happen 2", async () => {
     const maxNameLength = 1;
-    const getFirstNameMock = jest.fn(() => {
-      return "Pablo Diego José Francisco";
-    });
+    const expectedValue = "tom";
+    const testData: Object = {
+      first_name: expectedValue,
+    };
+    axiosSpy.mockResolvedValue({ data: testData });
     const expectedErrorMsg = "first_name too long";
 
-    // TODO：「1.10 Don’t catch errors, expect them」のルールに従い、こちらで書きたかったが、
-    // エラーが解消できなかったため、断念。。
-    // await expect(
-    //   getFirstNameThrowIfLong(maxNameLength, getFirstNameMock())
-    // ).rejects.toThrow(expectedErrorMsg);
-
-    // TODO：エラーメッセージのチェックをしたい
-    try {
-      await getFirstNameThrowIfLong(maxNameLength, getFirstNameMock());
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-    }
+    expect.assertions(1);
+    await expect(
+      getFirstNameThrowIfLong(maxNameLength, nameApiSerivce)
+    ).rejects.toThrow(expectedErrorMsg);
   });
 });

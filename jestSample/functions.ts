@@ -27,16 +27,15 @@ export const asyncSumOfArraySometimesZero = (
   });
 };
 
-export const getFirstNameThrowIfLong = (
+export const getFirstNameThrowIfLong = async (
   maxNameLength: number,
-  randomName: string
-): string => {
-  const nameApiSerivce = new NameApiService(); // fixme: この関数をテストするには、NameApiServiceの使い方を変える必要がありそう！ヒント：依存性の注入
-  // 依存性オブジェクトとして引数から取得するので以下を削除
-  // const firstName = await nameApiSerivce.getFirstName();
+  nameApiSerivce: NameApiService
+): Promise<string> => {
+  nameApiSerivce = new NameApiService();
+  const firstName = await nameApiSerivce.getFirstName();
 
-  if (randomName.length > maxNameLength) {
+  if (firstName.length > maxNameLength) {
     throw new Error("first_name too long");
   }
-  return randomName;
+  return firstName;
 };
