@@ -5,7 +5,7 @@ import {
   asyncSumOfArraySometimesZero,
   getFirstNameThrowIfLong,
 } from "../functions";
-import { NameApiService } from "../nameApiService";
+import { DatabaseMock } from "../util/index";
 
 /**
  * sumOfArrayのテスト
@@ -71,35 +71,40 @@ describe("test of asyncSumOfArray", () => {
  * asyncSumOfArraySometimesZeroのテスト
  */
 describe("test of asyncSumOfArraySometimesZero", () => {
+  let database: DatabaseMock;
+  beforeEach(() => {
+    database = new DatabaseMock();
+  });
+
   // 正常系のテスト
   test("normal case: no errors happen", async () => {
     const testData = [1, 1];
-    // TODO：本当はspyonを使ってgetRandomInt関数の戻り値を10に指定したかったが、やり方わからず。。
-    // getRandonIntを直接エクスポートしているせいでやりづらいのかも？
-    // ところでspyとmockとstubの違いがよくわからないため、あとで以下を読む
-    // https://martinfowler.com/articles/mocksArentStubs.html
-    const randomIntMock = jest.fn(() => {
-      return 10;
+    const databaseSaveSpy = jest.spyOn(database, "save");
+    databaseSaveSpy.mockImplementation(() => {
+      return testData;
     });
-    const expectedValue: number = 2;
+    const expectedValue = 2;
 
     const receivedValue = await asyncSumOfArraySometimesZero(
       testData,
-      randomIntMock()
+      database
     );
 
+    expect.assertions(1);
     expect(receivedValue).toBe(expectedValue);
   });
 
   test("normal case: some errors happen", async () => {
-    const testData = [1, 1];
-    const randomIntMock = jest.fn(() => {
-      return 1;
+    const testData: number[] = [];
+    const databaseSaveSpy = jest.spyOn(database, "save");
+    databaseSaveSpy.mockImplementation(() => {
+      return testData;
     });
     const expectedValue = 0;
 
+    expect.assertions(1);
     await expect(
-      asyncSumOfArraySometimesZero(testData, randomIntMock())
+      asyncSumOfArraySometimesZero(testData, database)
     ).resolves.toBe(expectedValue);
   });
 });
