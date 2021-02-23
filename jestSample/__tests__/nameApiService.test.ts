@@ -7,34 +7,30 @@ describe("test of NameApiService", () => {
 
   // 正常系のテスト
   test("normal case: no errors happen", async () => {
-    const nameApiServiceInstance = new NameApiService();
+    const nameApiService = new NameApiService();
+    const expectedValue = "tom";
     const testData: Object = {
-      first_name: "tom",
+      first_name: expectedValue,
     };
     axiosSpy.mockResolvedValue({ data: testData });
-    const randomName = await nameApiServiceInstance.getRandomName();
+    const receivedValue = await nameApiService.getFirstName();
 
-    const receivedValue = await nameApiServiceInstance.getFirstName(randomName);
-    const expectedValue = "tom";
-
+    expect.assertions(1);
     expect(receivedValue).toBe(expectedValue);
   });
 
   test("normal case: some errors happen", async () => {
-    const nameApiServiceInstance = new NameApiService();
+    const nameApiService = new NameApiService();
+    const expectedValue = "Pablo Diego José Francisco";
     const testData: Object = {
-      first_name: "Pablo Diego José Francisco",
+      first_name: expectedValue,
     };
     axiosSpy.mockResolvedValue({ data: testData });
-    const randomName = await nameApiServiceInstance.getRandomName();
-    const expectedValue = "Pablo Diego José Francisco";
+    const expectedErrorMsg = "firstName is too long!";
 
-    // TODO：「1.10 Don’t catch errors, expect them」のルールに従いたかったが、
-    // エラーが解消できなかったため、断念。。
-    try {
-      await nameApiServiceInstance.getFirstName(randomName);
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-    }
+    expect.assertions(1);
+    await expect(nameApiService.getFirstName()).rejects.toThrow(
+      new Error(expectedErrorMsg)
+    );
   });
 });
