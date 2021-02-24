@@ -13,8 +13,8 @@ export const asyncSumOfArray = (numbers: number[]): Promise<number> => {
 };
 
 export const asyncSumOfArraySometimesZero = (
-  numbers: number[],
-  databaseMock: DatabaseMock
+  databaseMock: DatabaseMock,
+  numbers: number[]
 ): Promise<number> => {
   return new Promise((resolve): void => {
     try {
@@ -22,6 +22,7 @@ export const asyncSumOfArraySometimesZero = (
       databaseMock.save(numbers);
       resolve(sumOfArray(numbers));
     } catch (error) {
+      console.log(error)
       resolve(0);
     }
   });

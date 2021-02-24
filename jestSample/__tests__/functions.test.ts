@@ -73,11 +73,6 @@ describe("test of asyncSumOfArray", () => {
  * asyncSumOfArraySometimesZeroのテスト
  */
 describe("test of asyncSumOfArraySometimesZero", () => {
-  let database: DatabaseMock;
-  beforeEach(() => {
-    database = new DatabaseMock();
-  });
-
   const databaseMock: DatabaseMock = {
     save: jest.fn(),
   };
@@ -88,8 +83,8 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     const expectedValue = 2;
 
     const receivedValue = await asyncSumOfArraySometimesZero(
-      testData,
-      database
+      databaseMock,
+      testData
     );
 
     expect.assertions(1);
@@ -102,7 +97,7 @@ describe("test of asyncSumOfArraySometimesZero", () => {
 
     expect.assertions(1);
     await expect(
-      asyncSumOfArraySometimesZero(testData, database)
+      asyncSumOfArraySometimesZero(databaseMock, testData)
     ).resolves.toBe(expectedValue);
   });
 });
