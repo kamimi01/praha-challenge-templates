@@ -78,13 +78,13 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     database = new DatabaseMock();
   });
 
+  const databaseMock: DatabaseMock = {
+    save: jest.fn(),
+  };
+
   // 正常系のテスト
   test("normal case: no errors happen", async () => {
     const testData = [1, 1];
-    const databaseSaveSpy = jest.spyOn(database, "save");
-    databaseSaveSpy.mockImplementation(() => {
-      return testData;
-    });
     const expectedValue = 2;
 
     const receivedValue = await asyncSumOfArraySometimesZero(
@@ -98,10 +98,6 @@ describe("test of asyncSumOfArraySometimesZero", () => {
 
   test("normal case: some errors happen", async () => {
     const testData: number[] = [];
-    const databaseSaveSpy = jest.spyOn(database, "save");
-    databaseSaveSpy.mockImplementation(() => {
-      return testData;
-    });
     const expectedValue = 0;
 
     expect.assertions(1);
