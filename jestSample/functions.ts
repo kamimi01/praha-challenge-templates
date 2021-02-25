@@ -22,7 +22,6 @@ export const asyncSumOfArraySometimesZero = (
       databaseMock.save(numbers);
       resolve(sumOfArray(numbers));
     } catch (error) {
-      console.log(error)
       resolve(0);
     }
   });

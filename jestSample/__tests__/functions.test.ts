@@ -95,10 +95,14 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     const testData: number[] = [];
     const expectedValue = 0;
 
+    const receivedValue = await asyncSumOfArraySometimesZero(
+      databaseMock,
+      testData
+    );
+
     expect.assertions(1);
-    await expect(
-      asyncSumOfArraySometimesZero(databaseMock, testData)
-    ).resolves.toBe(expectedValue);
+    // expect(databaseMock.save).toBeCalledWith(testData);
+    expect(receivedValue).toBe(expectedValue);
   });
 });
 
@@ -135,9 +139,11 @@ describe("test of getFirstNameThrowIfLong", () => {
     const maxNameLength = 1;
     const expectedValue = "tom";
     const testData: Object = {
-      first_name: expectedValue,
+      data: {
+        first_name: expectedValue,
+      },
     };
-    axiosSpy.mockResolvedValue({ data: testData });
+    axiosSpy.mockResolvedValue(testData);
     const expectedErrorMsg = "first_name too long";
 
     expect.assertions(1);
