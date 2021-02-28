@@ -27,7 +27,7 @@ describe("test of sumOfArray", () => {
   // 空配列を渡して例外を発生させるテスト
   test("exception case: empty array", () => {
     const testData: number[] = [];
-    const expectedValue = 0
+    const expectedValue = 0;
 
     const receivedValue = sumOfArray(testData);
 
@@ -85,9 +85,10 @@ describe("test of asyncSumOfArraySometimesZero", () => {
   const databaseMock: DatabaseMock = {
     save: jest.fn(),
   };
+  
   const dependencies: dependencies = {
-    databaseMock: databaseMock
-  }
+    databaseMock: databaseMock,
+  };
 
   // 正常系のテスト
   test("normal case: no errors happen", async () => {
@@ -100,7 +101,8 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     );
 
     expect.assertions(1);
-    // TODO：どうやらモック関数が呼ばれておらず、以下のチェックが失敗する（理由不明。。）
+    // TODO：モックした関数が呼ばれていない（理由不明。。モック化はしているのだが、、）
+    // そのため、オリジナルの関数が呼ばれた結果、テストがたまにfailしてしまう
     // expect(databaseMock.save).toBeCalled();
     expect(receivedValue).toBe(expectedValue);
   });
