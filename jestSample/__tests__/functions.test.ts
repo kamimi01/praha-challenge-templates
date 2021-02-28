@@ -91,7 +91,7 @@ describe("test of asyncSumOfArraySometimesZero", () => {
       testData
     );
 
-    // expect.assertions(1);
+    expect.assertions(1);
     // TODO：どうやらモック関数が呼ばれておらず、以下のチェックが失敗する（理由不明。。）
     // expect(databaseMock.save).toBeCalled();
     expect(receivedValue).toBe(expectedValue);
