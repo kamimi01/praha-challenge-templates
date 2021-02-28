@@ -4,6 +4,7 @@ import {
   sumOfArray,
   asyncSumOfArray,
   asyncSumOfArraySometimesZero,
+  dependencies,
   getFirstNameThrowIfLong,
 } from "../functions";
 import { NameApiService } from "../nameApiService";
@@ -76,6 +77,9 @@ describe("test of asyncSumOfArraySometimesZero", () => {
   const databaseMock: DatabaseMock = {
     save: jest.fn(),
   };
+  const dependencies: dependencies = {
+    databaseMock: databaseMock
+  }
 
   // 正常系のテスト
   test("normal case: no errors happen", async () => {
@@ -83,11 +87,11 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     const expectedValue = 2;
 
     const receivedValue = await asyncSumOfArraySometimesZero(
-      databaseMock,
+      dependencies,
       testData
     );
 
-    expect.assertions(1);
+    // expect.assertions(1);
     // TODO：どうやらモック関数が呼ばれておらず、以下のチェックが失敗する（理由不明。。）
     // expect(databaseMock.save).toBeCalled();
     expect(receivedValue).toBe(expectedValue);
@@ -98,7 +102,7 @@ describe("test of asyncSumOfArraySometimesZero", () => {
     const expectedValue = 0;
 
     const receivedValue = await asyncSumOfArraySometimesZero(
-      databaseMock,
+      dependencies,
       testData
     );
 

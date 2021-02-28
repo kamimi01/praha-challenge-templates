@@ -12,14 +12,19 @@ export const asyncSumOfArray = (numbers: number[]): Promise<number> => {
   });
 };
 
+// 依存するオブジェクトが増加した場合、ここに追加していく
+export type dependencies = {
+  databaseMock: DatabaseMock
+}
+
 export const asyncSumOfArraySometimesZero = (
-  databaseMock: DatabaseMock,
+  dependencies: dependencies,
   numbers: number[]
 ): Promise<number> => {
   return new Promise((resolve): void => {
     try {
-      databaseMock = new DatabaseMock();
-      databaseMock.save(numbers);
+      dependencies.databaseMock = new DatabaseMock();
+      dependencies.databaseMock.save(numbers);
       resolve(sumOfArray(numbers));
     } catch (error) {
       resolve(0);
