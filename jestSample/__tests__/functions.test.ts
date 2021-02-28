@@ -27,8 +27,12 @@ describe("test of sumOfArray", () => {
   // 空配列を渡して例外を発生させるテスト
   test("exception case: empty array", () => {
     const testData: number[] = [];
+    const expectedValue = 0
 
-    expect(() => sumOfArray(testData)).toThrow();
+    const receivedValue = sumOfArray(testData);
+
+    expect(receivedValue).toBe(expectedValue);
+    // expect(() => sumOfArray(testData)).toBe(expectedValue);
   });
 
   // stringの配列を渡すテスト（ビルド時に例外が発生するためテスト不可）
@@ -64,9 +68,13 @@ describe("test of asyncSumOfArray", () => {
   // 空配列を渡して例外を発生させるテスト
   test("exception case: empty array", async () => {
     const testData: number[] = [];
+    const expectedValue = 0;
 
     expect.assertions(1);
-    await expect(asyncSumOfArray(testData)).rejects.toThrow();
+    // await expect(asyncSumOfArray(testData)).rejects.toThrow();
+    const receivedValue = await asyncSumOfArray(testData);
+
+    expect(receivedValue).toBe(expectedValue);
   });
 });
 

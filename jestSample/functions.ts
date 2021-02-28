@@ -3,7 +3,7 @@ import { DatabaseMock } from "./util";
 
 // number型の配列の要素を全て足した結果を返す
 export const sumOfArray = (numbers: number[]): number => {
-  return numbers.reduce((a: number, b: number): number => a + b);
+  return numbers.reduce((a: number, b: number): number => a + b, 0);
 };
 
 export const asyncSumOfArray = (numbers: number[]): Promise<number> => {
@@ -14,21 +14,24 @@ export const asyncSumOfArray = (numbers: number[]): Promise<number> => {
 
 // 依存するオブジェクトが増加した場合、ここに追加していく
 export type dependencies = {
-  databaseMock: DatabaseMock
-}
+  databaseMock: DatabaseMock;
+};
 
 export const asyncSumOfArraySometimesZero = (
   dependencies: dependencies,
   numbers: number[]
 ): Promise<number> => {
   return new Promise((resolve): void => {
-    try {
-      dependencies.databaseMock = new DatabaseMock();
-      dependencies.databaseMock.save(numbers);
-      resolve(sumOfArray(numbers));
-    } catch (error) {
-      resolve(0);
-    }
+    dependencies.databaseMock = new DatabaseMock();
+    dependencies.databaseMock.save(numbers);
+    resolve(sumOfArray(numbers));
+    // try {
+    //   dependencies.databaseMock = new DatabaseMock();
+    //   dependencies.databaseMock.save(numbers);
+    //   resolve(sumOfArray(numbers));
+    // } catch (error) {
+    //   resolve(0);
+    // }
   });
 };
 
