@@ -22,7 +22,6 @@ export const asyncSumOfArraySometimesZero = (
   numbers: number[]
 ): Promise<number> => {
   return new Promise((resolve): void => {
-    dependencies.databaseMock = new DatabaseMock();
     dependencies.databaseMock.save(numbers);
     resolve(sumOfArray(numbers));
     // try {

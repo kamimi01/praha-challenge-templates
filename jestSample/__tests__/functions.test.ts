@@ -100,10 +100,8 @@ describe("test of asyncSumOfArraySometimesZero", () => {
       testData
     );
 
-    expect.assertions(1);
-    // TODO：モックした関数が呼ばれていない（理由不明。。モック化はしているのだが、、）
-    // そのため、オリジナルの関数が呼ばれた結果、テストがたまにfailしてしまう
-    // expect(databaseMock.save).toBeCalled();
+    expect.assertions(2);
+    expect(databaseMock.save).toBeCalled();
     expect(receivedValue).toBe(expectedValue);
   });
 
@@ -116,8 +114,8 @@ describe("test of asyncSumOfArraySometimesZero", () => {
       testData
     );
 
-    expect.assertions(1);
-    // expect(databaseMock.save).toBeCalledWith(testData);
+    expect.assertions(2);
+    expect(databaseMock.save).toBeCalledWith(testData);
     expect(receivedValue).toBe(expectedValue);
   });
 });
