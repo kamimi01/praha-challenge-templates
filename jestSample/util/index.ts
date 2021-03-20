@@ -1,3 +1,4 @@
+// 依存性オブジェクトをエクスポートして単体テストで扱えるようにする
 const getRandomInt = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max));
 };
